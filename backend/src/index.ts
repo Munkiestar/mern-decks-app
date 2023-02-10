@@ -1,16 +1,18 @@
 import { config } from 'dotenv';
 config();
+// @ts-ignore
 import express, { Response, Request } from 'express';
 import mongoose from 'mongoose';
+import Deck from './models/Deck';
+const cors = require('cors');
 
 mongoose.set('strictQuery', false);
-
-import Deck from './models/Deck';
 
 const PORT = 5000;
 
 const app = express();
 
+app.use(cors({ origin: true }));
 app.use(express.json());
 
 app.get('/', (req: Request, res: Response) => {
