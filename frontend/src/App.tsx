@@ -62,11 +62,11 @@ function App() {
       <br />
       <br />
       <div className='decks'>
-        {decks.map((deck) => (
-          <ul>
+        <ul>
+          {decks.map((deck) => (
             <li key={deck._id}>{deck.title}</li>
-          </ul>
-        ))}
+          ))}
+        </ul>
       </div>
     </div>
   );
