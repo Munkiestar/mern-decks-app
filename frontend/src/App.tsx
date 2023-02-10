@@ -1,8 +1,14 @@
 import './app.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
+type TDeck = {
+  title: string;
+  _id: number;
+};
 
 function App() {
   const [titleValue, setTitleValue] = useState('');
+  const [decks, setDecks] = useState<TDeck[]>([]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitleValue(e.target.value);
@@ -10,6 +16,9 @@ function App() {
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (titleValue.length === 0) return;
+
     await fetch('http://localhost:5000/decks', {
       method: 'POST',
       headers: {
@@ -21,6 +30,22 @@ function App() {
     });
     setTitleValue('');
   };
+
+  const fetchDecks = async () => {
+    try {
+      const res = await fetch('http://localhost:5000/decks');
+      const data = await res.json();
+      setDecks(data);
+    } catch (err) {
+      console.log('Err: ', err);
+    }
+  };
+
+  useEffect(() => {
+    fetchDecks();
+  }, []);
+
+  console.log('decks', decks);
 
   return (
     <div className='app'>
@@ -34,6 +59,15 @@ function App() {
         <br />
         <button type='submit'>Create Deck</button>
       </form>
+      <br />
+      <br />
+      <div className='decks'>
+        {decks.map((deck) => (
+          <ul>
+            <li key={deck._id}>{deck.title}</li>
+          </ul>
+        ))}
+      </div>
     </div>
   );
 }

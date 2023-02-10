@@ -4,3 +4,25 @@
   padding: 2rem;
   text-align: center;
 }
+
+.decks {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 700px;
+  margin: 0 auto;
+  grid-gap: 1rem;
+}
+
+.decks li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /*width: 80%;*/
+  height: 50px;
+  padding: 2rem;
+  list-style: none;
+  border: 1px solid #6c4f4f;
+  text-align: center;
+  box-shadow: 5px 5px 15px -4px #000;
+  border-radius: 5px;
+}

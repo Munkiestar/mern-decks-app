@@ -15,10 +15,14 @@ const app = express();
 app.use(cors({ origin: true }));
 app.use(express.json());
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('home');
+// fetch all decks from mongo
+app.get('/decks', async (req: Request, res: Response) => {
+  const allDecks = await Deck.find();
+  console.log('allDecks', allDecks);
+  res.json(allDecks);
 });
 
+// create new deck,save to mongo
 app.post('/decks', async (req: Request, res: Response) => {
   console.log('body: ', req.body);
   const { title } = req.body;
