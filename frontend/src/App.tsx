@@ -8,14 +8,18 @@ function App() {
     setTitleValue(e.target.value);
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    fetch('http://localhost:5000/decks', {
+    await fetch('http://localhost:5000/decks', {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         title: titleValue,
       }),
     });
+    setTitleValue('');
   };
 
   return (
