@@ -1,5 +1,8 @@
+import { config } from 'dotenv';
+config();
 import express, { Response, Request } from 'express';
 import mongoose from 'mongoose';
+
 mongoose.set('strictQuery', false);
 
 import Deck from './models/Deck';
@@ -26,7 +29,7 @@ app.post('/decks', async (req: Request, res: Response) => {
 
 try {
   // @ts-ignore
-  mongoose.connect('mongodb+srv://flashcard:rkNorLQ3hBvgZ3nb@cluster0.rpedaca.mongodb.net/?retryWrites=true&w=majority', { useNewUrlParser: true }).then((r) => {
+  mongoose.connect(process.env.MONGO_URL!, { useNewUrlParser: true }).then((r) => {
     // console.log('R: ', r);
     console.log(`Listening on port ${PORT}`);
   });
