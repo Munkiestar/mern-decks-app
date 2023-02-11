@@ -3,7 +3,10 @@ config();
 // @ts-ignore
 import express, { Response, Request } from 'express';
 import mongoose from 'mongoose';
-import Deck from './models/Deck';
+
+import { getDeckController } from './controllers/getDeckController';
+import { createDeckController } from './controllers/createDeckController';
+import { deleteDeckController } from './controllers/deleteDeckController';
 const cors = require('cors');
 
 mongoose.set('strictQuery', false);
@@ -16,34 +19,13 @@ app.use(cors({ origin: true }));
 app.use(express.json());
 
 // fetch all decks from mongo
-app.get('/decks', async (req: Request, res: Response) => {
-  const allDecks = await Deck.find();
-  console.log('allDecks', allDecks);
-  res.json(allDecks);
-});
+app.get('/decks', getDeckController);
 
 // create new deck,save to mongo
-app.post('/decks', async (req: Request, res: Response) => {
-  console.log('body: ', req.body);
-  const { title } = req.body;
-  const newDeck = new Deck({
-    title,
-  });
-  const createdDeck = await newDeck.save();
-  res.json(createdDeck);
-});
+app.post('/decks', createDeckController);
 
 // delete single deck
-app.delete('/decks/:deckId', async (req: Request, res: Response) => {
-  // get deck id from url
-  const { deckId } = req.params;
-  console.log('deckId', deckId);
-  // delete that deck from mongo
-  const deletedDeck = await Deck.findByIdAndDelete(deckId);
-  console.log('deletedDeck', deletedDeck);
-
-  res.json(deletedDeck);
-});
+app.delete('/decks/:deckId', deleteDeckController);
 
 try {
   // @ts-ignore
