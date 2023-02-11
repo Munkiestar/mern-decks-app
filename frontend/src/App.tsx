@@ -19,7 +19,7 @@ function App() {
 
     if (titleValue.length === 0) return;
 
-    await fetch('http://localhost:5000/decks', {
+    const res = await fetch('http://localhost:5000/decks', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -28,7 +28,18 @@ function App() {
         title: titleValue,
       }),
     });
+    const newDeck = await res.json();
+    setDecks([...decks, newDeck]);
     setTitleValue('');
+  };
+
+  const handleDeleteDeck = async (deckId: number) => {
+    console.log('deckId: ', deckId);
+    await fetch(`http://localhost:5000/decks/${deckId}`, {
+      method: 'DELETE',
+    });
+
+    setDecks(decks.filter((deck) => deck._id !== deckId));
   };
 
   const fetchDecks = async () => {
@@ -64,7 +75,10 @@ function App() {
       <div className='decks'>
         <ul>
           {decks.map((deck) => (
-            <li key={deck._id}>{deck.title}</li>
+            <li key={deck._id}>
+              {deck.title}
+              <button onClick={() => handleDeleteDeck(deck._id)}>X</button>
+            </li>
           ))}
         </ul>
       </div>

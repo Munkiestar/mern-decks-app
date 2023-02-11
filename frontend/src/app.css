@@ -14,6 +14,7 @@
 }
 
 .decks li {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -25,4 +26,13 @@
   text-align: center;
   box-shadow: 5px 5px 15px -4px #000;
   border-radius: 5px;
+}
+
+.decks li button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+
+  align-items: center;
+  font-size: 0.7rem;
 }
