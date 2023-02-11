@@ -1,11 +1,10 @@
 import './app.css';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-
-type TDeck = {
-  title: string;
-  _id: number;
-};
+import getDecks from './api/getDecks';
+import deleteDecks from './api/deleteDeck';
+import createDeck from './api/createDeck';
+import { TDeck } from './api/getDecks';
 
 function App() {
   const [titleValue, setTitleValue] = useState('');
@@ -20,33 +19,20 @@ function App() {
 
     if (titleValue.length === 0) return;
 
-    const res = await fetch('http://localhost:5000/decks', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        title: titleValue,
-      }),
-    });
-    const newDeck = await res.json();
-    setDecks([...decks, newDeck]);
+    const res = await createDeck(titleValue);
+    setDecks([...decks, res]);
     setTitleValue('');
   };
 
   const handleDeleteDeck = async (deckId: number) => {
-    console.log('deckId: ', deckId);
-    await fetch(`http://localhost:5000/decks/${deckId}`, {
-      method: 'DELETE',
-    });
+    await deleteDecks(deckId);
 
     setDecks(decks.filter((deck) => deck._id !== deckId));
   };
 
   const fetchDecks = async () => {
     try {
-      const res = await fetch('http://localhost:5000/decks');
-      const data = await res.json();
+      const data = await getDecks();
       setDecks(data);
     } catch (err) {
       console.log('Err: ', err);
@@ -56,8 +42,6 @@ function App() {
   useEffect(() => {
     fetchDecks();
   }, []);
-
-  console.log('decks', decks);
 
   return (
     <div className='app'>
