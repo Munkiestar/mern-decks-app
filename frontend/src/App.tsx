@@ -1,5 +1,6 @@
 import './app.css';
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 type TDeck = {
   title: string;
@@ -60,8 +61,6 @@ function App() {
 
   return (
     <div className='app'>
-      <h1>hello</h1>
-
       <form action='' onSubmit={handleFormSubmit}>
         <label htmlFor='deck-title'>Deck title </label>
         <input type='text' name='deck-title' value={titleValue} onChange={handleInputChange} />
@@ -76,7 +75,7 @@ function App() {
         <ul>
           {decks.map((deck) => (
             <li key={deck._id}>
-              {deck.title}
+              <Link to={`/decks/${deck._id}`}>{deck.title}</Link>
               <button onClick={() => handleDeleteDeck(deck._id)}>X</button>
             </li>
           ))}
